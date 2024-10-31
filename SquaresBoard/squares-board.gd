@@ -7,19 +7,20 @@ const CELL_COLOUR_MAP = {
 	"Y": Vector2i(0, 1)
 }
 
-@onready var background_layer: TileMapLayer = $BackgroundLayer
+@onready var background_layer: SquaresBackgroundLayer = $BackgroundLayer
 @onready var pieces_placement_layer: TileMapLayer = $PiecesPlacementLayer
 @onready var piece_preview_layer: TileMapLayer = $PiecePreviewLayer
-@onready var border_layer: BorderLayer = $BorderLayer
+@onready var border_layer: SquaresBorderLayer = $BorderLayer
+
+var width: int = 15
+var height: int = 10
 
 var mouse_cell : Vector2i
-
-var current_piece := [["R","B","R","R"], 
-						["R","R","R","R"]]
+var current_piece : Array
 
 func _ready() -> void:
+	background_layer.draw_background(width, height)
 	get_new_piece()
-	pass
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -31,17 +32,26 @@ func _input(event: InputEvent) -> void:
 	preview_piece_placement()
 
 func handle_mouse_hover() -> void:
-	var current_mouse_cell = background_layer.local_to_map(get_local_mouse_position())
-	if current_mouse_cell != mouse_cell:
+	var current_mouse_cell = background_layer.local_to_map(get_global_mouse_position())
+	if current_mouse_cell != mouse_cell && piece_is_inside_area(current_mouse_cell):
 		mouse_cell = current_mouse_cell
 		preview_piece_placement()
+
+func piece_is_inside_area(reference_cell: Vector2i) -> bool:
+	for line_n in current_piece.size():
+		for col_n in current_piece[line_n].size():
+			var cell = Vector2(reference_cell.x + (col_n/2), reference_cell.y + (line_n/2))
+			if cell.x < 0 || cell.x >= width || cell.y < 0 || cell.y >= height:
+				print("Blocked cell " + str(cell))
+				return false
+	return true
 
 func preview_piece_placement() -> void:
 	piece_preview_layer.clear()
 	for line_n in current_piece.size():
-		for row_n in current_piece[line_n].size():
-			var board_cell = (2*mouse_cell) + Vector2i(row_n, line_n)
-			var colour_piece = CELL_COLOUR_MAP[current_piece[line_n][row_n]]
+		for col_n in current_piece[line_n].size():
+			var board_cell = (2*mouse_cell) + Vector2i(col_n, line_n)
+			var colour_piece = CELL_COLOUR_MAP[current_piece[line_n][col_n]]
 			piece_preview_layer.set_cell(board_cell, 0, colour_piece)
 	return
 

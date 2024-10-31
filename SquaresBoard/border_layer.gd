@@ -1,4 +1,4 @@
-class_name BorderLayer
+class_name SquaresBorderLayer
 extends TileMapLayer
 
 const SOURCE := 0
