@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bq4eesgdij5ed"
-path="res://.godot/imported/borders_32.png-2d3e3a3e056f1a342f9ec01265da3e09.ctex"
+uid="uid://mfgasox3igqc"
+path="res://.godot/imported/4x16px color and symbols pairs .png-1e56101555494c8e95f7a93816d55a6a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://borders_32.png"
-dest_files=["res://.godot/imported/borders_32.png-2d3e3a3e056f1a342f9ec01265da3e09.ctex"]
+source_file="res://Assets/4x16px color and symbols pairs .png"
+dest_files=["res://.godot/imported/4x16px color and symbols pairs .png-1e56101555494c8e95f7a93816d55a6a.ctex"]
 
 [params]
 
