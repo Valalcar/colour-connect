@@ -1,6 +1,8 @@
+class_name PlanetBoard
 extends Node2D
 
 @onready var background_layer: TileMapLayer = $Layers/BackgroundLayer
+@onready var drawn_squares_layer: TileMapLayer = $Layers/DrawnSquaresLayer
 @onready var section_panel: Panel = $Camera2D/SectionPanel
 
 const SECTION_BOARD = preload("res://SquaresBoard/SectionBoard/section-board.tscn")
@@ -46,8 +48,26 @@ func load_sections():
 				var cell = cell_start + Vector2i(pos_x, pos_y)
 				sections_dictionary[cell] = section
 				background_layer.set_cell(cell, 1, Vector2i.ZERO)
-	
-	
+
+func get_pattern() -> TileMapPattern:
+	return drawn_squares_layer.get_pattern(drawn_squares_layer.get_used_cells())
+
+func get_patern_offset() -> Vector2i:
+	var used_cells = drawn_squares_layer.get_used_cells()
+	var offset : Vector2i = used_cells.front()
+	for cell in used_cells:
+		if cell.x < offset.x:
+			offset.x = cell.y
+		if cell.y < offset.y:
+			offset.y = cell.y
+	return offset
+
+
+func load_game(saved_game: SavedGame):
+	drawn_squares_layer.clear()
+	sections = saved_game.sections
+	drawn_squares_layer.set_pattern(saved_game.pattern_offset, saved_game.pattern)
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("esc"):
 		close_section()
@@ -73,8 +93,8 @@ func open_section(section_data: SectionData) -> void:
 	section_panel.add_child(section)
 	section_panel.visible = true
 
-func save_section(saved_data):
-	print("TODO: Save Data")
+func save_section(section_pattern: TileMapPattern, section_start: Vector2i):
+	drawn_squares_layer.set_pattern(2*opened_section_data.cell_start + section_start, section_pattern)
 
 func close_section():
 	opened_section.queue_free()

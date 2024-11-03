@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://cses16wteb3d3"]
+
+[ext_resource type="PackedScene" uid="uid://dvldfbmhqssri" path="res://SquaresBoard/planet_board.tscn" id="1_hmc6b"]
+[ext_resource type="Script" path="res://SaveGame/saver-loader.gd" id="2_onkh2"]
+
+[node name="Game" type="Node2D"]
+
+[node name="PlanetBoard" parent="." instance=ExtResource("1_hmc6b")]
+unique_name_in_owner = true
+
+[node name="SaverLoader" type="Node" parent="."]
+script = ExtResource("2_onkh2")

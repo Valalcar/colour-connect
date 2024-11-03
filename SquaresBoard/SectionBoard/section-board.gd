@@ -23,14 +23,11 @@ var height: int = 10
 var mouse_cell : Vector2i
 var current_piece : Array
 
-var pattern : TileMapPattern = null
-
 func _ready() -> void:
 	if section_data != null:
 		width = section_data.width
 		height = section_data.height
-		if section_data.pattern != null:
-			pattern = section_data.pattern
+		
 	else:
 		section_data = SectionData.new()
 		section_data.width = width
@@ -38,10 +35,6 @@ func _ready() -> void:
 	
 	background_layer.draw_background(width, height)
 	get_new_piece()
-
-func load_stage() -> void:
-	if pattern:
-		piece_preview_layer.set_pattern(Vector2i.ZERO, pattern)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_released("num1"):
@@ -151,6 +144,14 @@ func get_new_piece() -> void:
 	current_piece = result
 		
 func save_board() -> void :
-	pattern = pieces_placement_layer.get_pattern(pieces_placement_layer.get_used_cells())
-	section_data.pattern = pattern
-	saved_section.emit(section_data)
+	var used_cells = pieces_placement_layer.get_used_cells()
+	var offset : Vector2i = used_cells.front()
+	for cell in used_cells:
+		if cell.x < offset.x:
+			offset.x = cell.y
+		if cell.y < offset.y:
+			offset.y = cell.y
+	
+	var pattern_start = offset
+	var pattern = pieces_placement_layer.get_pattern(used_cells)
+	saved_section.emit(pattern, pattern_start)
