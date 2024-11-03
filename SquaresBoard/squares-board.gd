@@ -1,4 +1,7 @@
+class_name SquaresBoard
 extends Node2D
+
+signal saved_section(section_data: SectionData)
 
 const CELL_COLOUR_MAP = {
 	"R": Vector2i(0, 0),
@@ -12,17 +15,38 @@ const CELL_COLOUR_MAP = {
 @onready var piece_preview_layer: TileMapLayer = $PiecePreviewLayer
 @onready var border_layer: SquaresBorderLayer = $BorderLayer
 
+@export var section_data: SectionData
+
 var width: int = 15
 var height: int = 10
 
 var mouse_cell : Vector2i
 var current_piece : Array
 
+var pattern : TileMapPattern = null
+
 func _ready() -> void:
+	if section_data != null:
+		width = section_data.width
+		height = section_data.height
+		if section_data.pattern != null:
+			pattern = section_data.pattern
+	else:
+		section_data = SectionData.new()
+		section_data.width = width
+		section_data.height = height
+	
 	background_layer.draw_background(width, height)
 	get_new_piece()
 
+func load_stage() -> void:
+	if pattern:
+		piece_preview_layer.set_pattern(Vector2i.ZERO, pattern)
+
 func _input(event: InputEvent) -> void:
+	if event.is_action_released("num1"):
+		save_board()
+	
 	if event is InputEventMouseMotion:
 		handle_mouse_hover()
 	elif event.is_action_released("rmb"):
@@ -32,7 +56,8 @@ func _input(event: InputEvent) -> void:
 	preview_piece_placement()
 
 func handle_mouse_hover() -> void:
-	var current_mouse_cell = background_layer.local_to_map(get_global_mouse_position())
+	var mouse_pos = background_layer.to_local(get_global_mouse_position())
+	var current_mouse_cell = background_layer.local_to_map(mouse_pos)
 	if current_mouse_cell != mouse_cell && piece_is_inside_area(current_mouse_cell):
 		mouse_cell = current_mouse_cell
 		preview_piece_placement()
@@ -42,7 +67,6 @@ func piece_is_inside_area(reference_cell: Vector2i) -> bool:
 		for col_n in current_piece[line_n].size():
 			var cell = Vector2(reference_cell.x + (col_n/2), reference_cell.y + (line_n/2))
 			if cell.x < 0 || cell.x >= width || cell.y < 0 || cell.y >= height:
-				print("Blocked cell " + str(cell))
 				return false
 	return true
 
@@ -55,7 +79,7 @@ func preview_piece_placement() -> void:
 			piece_preview_layer.set_cell(board_cell, 0, colour_piece)
 	return
 
-func place_piece():
+func place_piece() -> void:
 	if (!check_piece()):
 		return
 	var placement_cells = piece_preview_layer.get_used_cells()
@@ -126,3 +150,7 @@ func get_new_piece() -> void:
 			result[line].push_back(color)
 	current_piece = result
 		
+func save_board() -> void :
+	pattern = pieces_placement_layer.get_pattern(pieces_placement_layer.get_used_cells())
+	section_data.pattern = pattern
+	saved_section.emit(section_data)

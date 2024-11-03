@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SectionData" load_steps=2 format=3 uid="uid://5i4hwxht3tcu"]
+
+[ext_resource type="Script" path="res://SquaresBoard/section_data.gd" id="1_6dgdt"]
+
+[resource]
+script = ExtResource("1_6dgdt")
+cell_start = Vector2i(4, -2)
+width = 7
+height = 5

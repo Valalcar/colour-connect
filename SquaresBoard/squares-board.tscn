@@ -1,12 +1,11 @@
-[gd_scene load_steps=16 format=4 uid="uid://cmrnnlqm5l2tm"]
+[gd_scene load_steps=11 format=4 uid="uid://cmrnnlqm5l2tm"]
 
 [ext_resource type="Script" path="res://SquaresBoard/squares-board.gd" id="1_b8pw8"]
 [ext_resource type="Texture2D" uid="uid://cd40oatjop8ob" path="res://Assets/grey_square_pair_32.png" id="2_4usjl"]
 [ext_resource type="Script" path="res://SquaresBoard/background_layer.gd" id="3_b4dkf"]
-[ext_resource type="Texture2D" uid="uid://mfgasox3igqc" path="res://Assets/4x16px color and symbols pairs .png" id="3_edmny"]
+[ext_resource type="TileSet" uid="uid://b6s1qy4iv8rit" path="res://SquaresBoard/shapes-tile-set.tres" id="4_2yo8n"]
 [ext_resource type="Texture2D" uid="uid://cphkikw2okayf" path="res://Assets/borders_16.png" id="4_qce67"]
 [ext_resource type="Script" path="res://SquaresBoard/border_layer.gd" id="5_v1q04"]
-[ext_resource type="PackedScene" uid="uid://c3eao8bt78rak" path="res://debug_camera.tscn" id="7_gasmh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_px684"]
 texture = ExtResource("2_4usjl")
@@ -17,21 +16,6 @@ texture_region_size = Vector2i(32, 32)
 [sub_resource type="TileSet" id="TileSet_xb1h3"]
 tile_size = Vector2i(32, 32)
 sources/2 = SubResource("TileSetAtlasSource_px684")
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1hq8n"]
-texture = ExtResource("3_edmny")
-0:0/next_alternative_id = 3
-0:0/0 = 0
-1:0/0 = 0
-2:0/0 = 0
-3:0/0 = 0
-0:1/0 = 0
-1:1/0 = 0
-2:1/0 = 0
-3:1/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_gthuc"]
-sources/0 = SubResource("TileSetAtlasSource_1hq8n")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4ueh0"]
 texture = ExtResource("4_qce67")
@@ -72,29 +56,6 @@ texture = ExtResource("4_qce67")
 [sub_resource type="TileSet" id="TileSet_y2mfq"]
 sources/0 = SubResource("TileSetAtlasSource_4ueh0")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3gxdx"]
-texture = ExtResource("3_edmny")
-1:0/next_alternative_id = 2
-1:0/0 = 0
-0:1/0 = 0
-1:1/0 = 0
-2:0/next_alternative_id = 4
-2:0/0 = 0
-2:0/0/texture_origin = Vector2i(32, 0)
-2:1/next_alternative_id = 3
-2:1/0 = 0
-2:1/0/texture_origin = Vector2i(32, 0)
-3:0/next_alternative_id = 3
-3:0/0 = 0
-3:0/0/texture_origin = Vector2i(32, 0)
-3:1/next_alternative_id = 3
-3:1/0 = 0
-3:1/0/texture_origin = Vector2i(32, 0)
-0:0/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_nv56o"]
-sources/0 = SubResource("TileSetAtlasSource_3gxdx")
-
 [node name="SquaresBoard" type="Node2D"]
 script = ExtResource("1_b8pw8")
 
@@ -104,13 +65,11 @@ tile_set = SubResource("TileSet_xb1h3")
 script = ExtResource("3_b4dkf")
 
 [node name="PiecesPlacementLayer" type="TileMapLayer" parent="."]
-tile_set = SubResource("TileSet_gthuc")
+tile_set = ExtResource("4_2yo8n")
 
 [node name="BorderLayer" type="TileMapLayer" parent="."]
 tile_set = SubResource("TileSet_y2mfq")
 script = ExtResource("5_v1q04")
 
 [node name="PiecePreviewLayer" type="TileMapLayer" parent="."]
-tile_set = SubResource("TileSet_nv56o")
-
-[node name="Camera2D" parent="." instance=ExtResource("7_gasmh")]
+tile_set = ExtResource("4_2yo8n")
