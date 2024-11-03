@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SectionData" load_steps=2 format=3 uid="uid://cwbny2kkxvqqh"]
 
-[ext_resource type="Script" path="res://SquaresBoard/section_data.gd" id="1_qlc73"]
+[ext_resource type="Script" path="res://SquaresBoard/SectionBoard/section_data.gd" id="1_qlc73"]
 
 [resource]
 script = ExtResource("1_qlc73")

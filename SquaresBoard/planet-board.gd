@@ -3,8 +3,7 @@ extends Node2D
 @onready var background_layer: TileMapLayer = $Layers/BackgroundLayer
 @onready var section_panel: Panel = $Camera2D/SectionPanel
 
-
-const SQUARES_BOARD = preload("res://SquaresBoard/squares-board.tscn")
+const SECTION_BOARD = preload("res://SquaresBoard/SectionBoard/section-board.tscn")
 const SECTIONS_PATH = "res://SquaresBoard/sections/"
 
 var sections : Array[SectionData]
@@ -68,7 +67,7 @@ func handle_click(cell: Vector2i):
 	
 func open_section(section_data: SectionData) -> void:
 	opened_section_data = section_data
-	var section = SQUARES_BOARD.instantiate()
+	var section = SECTION_BOARD.instantiate()
 	section.section_data = section_data
 	section.saved_section.connect(save_section)
 	opened_section = section

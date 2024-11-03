@@ -1,11 +1,11 @@
 [gd_scene load_steps=11 format=4 uid="uid://cmrnnlqm5l2tm"]
 
-[ext_resource type="Script" path="res://SquaresBoard/squares-board.gd" id="1_b8pw8"]
+[ext_resource type="Script" path="res://SquaresBoard/SectionBoard/section-board.gd" id="1_b8pw8"]
 [ext_resource type="Texture2D" uid="uid://cd40oatjop8ob" path="res://Assets/grey_square_pair_32.png" id="2_4usjl"]
-[ext_resource type="Script" path="res://SquaresBoard/background_layer.gd" id="3_b4dkf"]
+[ext_resource type="Script" path="res://SquaresBoard/SectionBoard/background_layer.gd" id="3_b4dkf"]
 [ext_resource type="TileSet" uid="uid://b6s1qy4iv8rit" path="res://SquaresBoard/shapes-tile-set.tres" id="4_2yo8n"]
 [ext_resource type="Texture2D" uid="uid://cphkikw2okayf" path="res://Assets/borders_16.png" id="4_qce67"]
-[ext_resource type="Script" path="res://SquaresBoard/border_layer.gd" id="5_v1q04"]
+[ext_resource type="Script" path="res://SquaresBoard/SectionBoard/border_layer.gd" id="5_v1q04"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_px684"]
 texture = ExtResource("2_4usjl")
@@ -56,7 +56,7 @@ texture = ExtResource("4_qce67")
 [sub_resource type="TileSet" id="TileSet_y2mfq"]
 sources/0 = SubResource("TileSetAtlasSource_4ueh0")
 
-[node name="SquaresBoard" type="Node2D"]
+[node name="SectionBoard" type="Node2D"]
 script = ExtResource("1_b8pw8")
 
 [node name="BackgroundLayer" type="TileMapLayer" parent="."]

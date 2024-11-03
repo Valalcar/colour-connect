@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="ColourConnect"
-run/main_scene="res://squares_selection.tscn"
+run/main_scene="res://SquaresBoard/planet_board.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://icon.svg"
 
