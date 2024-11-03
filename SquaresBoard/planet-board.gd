@@ -60,10 +60,8 @@ func _input(event: InputEvent) -> void:
 		handle_click(mouse_cell)
 	
 func handle_click(cell: Vector2i):
-	var clicked_section = sections.filter(func (s: SectionData): return s.cell_start.x <= cell.x && s.cell_start.y <= cell.y && s.cell_start.x + s.width > cell.x && s.cell_start.y + s.height > cell.y)
-	if clicked_section.is_empty():
-		return;
-	open_section(clicked_section.front())
+	if sections_dictionary.has(cell):
+		open_section(sections_dictionary[cell])
 	
 func open_section(section_data: SectionData) -> void:
 	opened_section_data = section_data
