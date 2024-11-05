@@ -4,6 +4,9 @@ extends Node2D
 @onready var background_layer: TileMapLayer = $Layers/BackgroundLayer
 @onready var drawn_squares_layer: TileMapLayer = $Layers/DrawnSquaresLayer
 @onready var section_panel: Panel = $Camera2D/SectionPanel
+@onready var panel: Panel = $Camera2D/Panel
+
+@onready var camera_2d: Camera2D = $Camera2D
 
 const SECTION_BOARD = preload("res://SquaresBoard/SectionBoard/section-board.tscn")
 const SECTIONS_PATH = "res://SquaresBoard/sections/"
@@ -62,7 +65,6 @@ func get_patern_offset() -> Vector2i:
 			offset.y = cell.y
 	return offset
 
-
 func load_game(saved_game: SavedGame):
 	drawn_squares_layer.clear()
 	sections = saved_game.sections
@@ -89,13 +91,19 @@ func open_section(section_data: SectionData) -> void:
 	section.section_data = section_data
 	section.saved_section.connect(save_section)
 	opened_section = section
-	#section_panel.position = camera_2d.position
+	
+	var section_size = Vector2(section_data.width, section_data.height)
+	camera_2d.adapt_to_view(section_size)
 	section_panel.add_child(section)
+	section.position = section_panel.size/2 - (32*section_size)/2
 	section_panel.visible = true
-
+	panel.visible = true
+	
 func save_section(section_pattern: TileMapPattern, section_start: Vector2i):
 	drawn_squares_layer.set_pattern(2*opened_section_data.cell_start + section_start, section_pattern)
 
 func close_section():
 	opened_section.queue_free()
 	section_panel.visible = false
+	panel.visible = false
+	camera_2d.adapt_to_view(Vector2.ZERO)

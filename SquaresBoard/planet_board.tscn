@@ -29,6 +29,16 @@ tile_set = ExtResource("3_o3vf3")
 
 [node name="Camera2D" parent="." instance=ExtResource("2_aww5i")]
 
+[node name="Panel" type="Panel" parent="Camera2D"]
+visible = false
+modulate = Color(0.0687983, 0.0687983, 0.0687982, 1)
+custom_minimum_size = Vector2(2000, 2000)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="SectionPanel" type="Panel" parent="Camera2D"]
 visible = false
 anchors_preset = 8
