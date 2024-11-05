@@ -5,7 +5,6 @@ const SAVE_PATH = "user://save_file.tres"
 
 @onready var planet_board: PlanetBoard = %PlanetBoard
 
-
 func _input(event: InputEvent) -> void:
 	if event.is_action_released("num9"):
 		save_game()
