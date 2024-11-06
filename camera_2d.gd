@@ -17,7 +17,6 @@ func adapt_to_view(section_size: Vector2) -> void:
 	var size_ratio = (viewport_size * 0.7) / (32 * section_size)
 	var zoom_change = min(size_ratio.x, size_ratio.y)
 	zoom = Vector2(zoom_change, zoom_change)
-	print(zoom_change)
 	
 	section_panel.size = (viewport_size / zoom_change)*0.8
 	section_panel.position = -section_panel.size/2

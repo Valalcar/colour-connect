@@ -11,14 +11,14 @@ const CELL_COLOUR_MAP = {
 }
 
 @onready var background_layer: SquaresBackgroundLayer = $BackgroundLayer
-@onready var pieces_placement_layer: TileMapLayer = $PiecesPlacementLayer
+@onready var pieces_placement_layer: PiecesPlacementLayer = $PiecesPlacementLayer
 @onready var piece_preview_layer: TileMapLayer = $PiecePreviewLayer
 @onready var border_layer: SquaresBorderLayer = $BorderLayer
 
 @export var section_data: SectionData
 
-var width: int = 15
-var height: int = 10
+var width: int = 8
+var height: int = 8
 
 var mouse_cell : Vector2i
 var current_piece : Array
@@ -70,7 +70,6 @@ func preview_piece_placement() -> void:
 			var board_cell = (2*mouse_cell) + Vector2i(col_n, line_n)
 			var colour_piece = CELL_COLOUR_MAP[current_piece[line_n][col_n]]
 			piece_preview_layer.set_cell(board_cell, 0, colour_piece)
-	return
 
 func place_piece() -> void:
 	if (!check_piece()):
@@ -79,7 +78,9 @@ func place_piece() -> void:
 	for preview_cell in placement_cells:
 		var atlas_cell = piece_preview_layer.get_cell_atlas_coords(preview_cell)
 		pieces_placement_layer.set_cell(preview_cell, 0, atlas_cell)
-	map_borders(placement_cells)
+	pieces_placement_layer.remap_groups(placement_cells)
+	pieces_placement_layer.remap_borders(placement_cells)
+	
 	get_new_piece()
 
 func check_piece() -> bool:
@@ -102,33 +103,13 @@ func rotate_piece() -> void:
 	rotated_piece.map(func (a: Array): a.reverse())
 	current_piece = rotated_piece
 	return
-
-func map_borders(cells: Array[Vector2i]) -> void:
-	const neighbors : Array[TileSet.CellNeighbor] = \
-		[TileSet.CELL_NEIGHBOR_RIGHT_SIDE, TileSet.CELL_NEIGHBOR_BOTTOM_SIDE, TileSet.CELL_NEIGHBOR_LEFT_SIDE, TileSet.CELL_NEIGHBOR_TOP_SIDE]
-	var cells_to_map = cells;
-	var mapped_cells: Array[Vector2i] = []
-	var similar_neighbors: Array[TileSet.CellNeighbor] = []
-	while !cells_to_map.is_empty():
-		var cell = cells_to_map.pop_front()
-		var cell_color = pieces_placement_layer.get_cell_atlas_coords(cell)
-		similar_neighbors = []
-		for neighbor in neighbors:
-			var neighbor_cell = pieces_placement_layer.get_neighbor_cell(cell, neighbor)
-			var neighbor_color = pieces_placement_layer.get_cell_atlas_coords(neighbor_cell)
-			if neighbor_color == cell_color:
-				similar_neighbors.push_back(neighbor)
-				if !mapped_cells.has(neighbor_cell) && !cells_to_map.has(neighbor_cell):
-					cells_to_map.push_back(neighbor_cell)
-		border_layer.set_tile_borders(cell, similar_neighbors);
-		mapped_cells.push_back(cell)
 		
 func get_new_piece() -> void:
 	var piece_types = [
 	[[0, 0, 1, 1],[2, 2, 3, 3]],
 	[[0, 1, 1, 2],[0, 3, 3, 2]]
 	]
-	var colour_options = ["R", "G", "B", "Y"]
+	var colour_options = ["R", "B"]#["R", "G", "B", "Y"]
 	var selected_colours = []
 	for i in range(4):
 		selected_colours.push_back(colour_options.pick_random())
