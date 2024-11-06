@@ -103,7 +103,8 @@ func save_section(section_pattern: TileMapPattern, section_start: Vector2i):
 	drawn_squares_layer.set_pattern(2*opened_section_data.cell_start + section_start, section_pattern)
 
 func close_section():
-	opened_section.queue_free()
-	section_panel.visible = false
-	panel.visible = false
-	camera_2d.adapt_to_view(Vector2.ZERO)
+	if is_instance_valid(opened_section):
+		opened_section.queue_free()
+		section_panel.visible = false
+		panel.visible = false
+		camera_2d.adapt_to_view(Vector2.ZERO)

@@ -51,9 +51,9 @@ func remap_groups(new_cells: Array[Vector2i]) -> void:
 	# Borders need to be mapped alongside neighbors, while groups don't
 	remap_borders(new_cells)
 	
-	build_groups_dic()
+	build_groups_list()
 	
-func build_groups_dic() -> void:
+func build_groups_list() -> void:
 	const CELL_COLOUR_MAP = {
 		Vector2i(0, 0): "Red",
 		Vector2i(1, 1): "Green",
@@ -61,13 +61,14 @@ func build_groups_dic() -> void:
 		Vector2i(0, 1): "Yellow"
 	}
 	var groups_results : Array[SectionColorGroup] = []
-	for g in color_groups:
-		var atlas = get_cell_atlas_coords(g)
+	for group_head_cell in color_groups:
+		var atlas = get_cell_atlas_coords(group_head_cell)
 		var color = CELL_COLOUR_MAP[atlas]
-		var s = color_groups[g].size()
+		var group_size = color_groups[group_head_cell].size()
 		var group_result = SectionColorGroup.new()
+		group_result.head_cell = group_head_cell
 		group_result.color = color
-		group_result.cells_count = s
+		group_result.cells_count = group_size
 		groups_results.push_back(group_result)
 	grouping_recalculated.emit(groups_results)
 
