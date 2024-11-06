@@ -109,7 +109,7 @@ func get_new_piece() -> void:
 	[[0, 0, 1, 1],[2, 2, 3, 3]],
 	[[0, 1, 1, 2],[0, 3, 3, 2]]
 	]
-	var colour_options = ["R", "B"]#["R", "G", "B", "Y"]
+	var colour_options = ["R", "G", "B", "Y"]
 	var selected_colours = []
 	for i in range(4):
 		selected_colours.push_back(colour_options.pick_random())
