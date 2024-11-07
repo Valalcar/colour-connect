@@ -23,22 +23,22 @@ var height: int = 8
 var mouse_cell : Vector2i
 var current_piece : Array
 
+var is_finished : bool = false
+
 func _ready() -> void:
-	if section_data != null:
-		width = section_data.width
-		height = section_data.height
-		
+	if section_data.finished:
+		is_finished = true
+		load_saved_board()
 	else:
-		section_data = SectionData.new()
-		section_data.width = width
-		section_data.height = height
-	
+		get_new_piece()
+		
+	width = section_data.width
+	height = section_data.height
 	background_layer.draw_background(width, height)
-	get_new_piece()
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_released("num1"):
-		save_board()
+	if is_finished:
+		return
 	
 	if event is InputEventMouseMotion:
 		handle_mouse_hover()
@@ -46,6 +46,8 @@ func _input(event: InputEvent) -> void:
 		rotate_piece()
 	elif event.is_action_released("lmb"):
 		place_piece()
+	elif event.is_action_released("num1"):
+		save_board()
 	preview_piece_placement()
 
 func handle_mouse_hover() -> void:
@@ -123,7 +125,11 @@ func get_new_piece() -> void:
 			var color = selected_colours[color_ref]
 			result[line].push_back(color)
 	current_piece = result
-		
+
+func load_saved_board() -> void:
+	pieces_placement_layer.set_pattern(section_data.pattern_offset, section_data.pattern)
+	pieces_placement_layer.remap_groups(pieces_placement_layer.get_used_cells())
+
 func save_board() -> void :
 	var used_cells = pieces_placement_layer.get_used_cells()
 	var offset : Vector2i = used_cells.front()
@@ -132,7 +138,9 @@ func save_board() -> void :
 			offset.x = cell.y
 		if cell.y < offset.y:
 			offset.y = cell.y
-	
-	var pattern_start = offset
-	var pattern = pieces_placement_layer.get_pattern(used_cells)
-	saved_section.emit(pattern, pattern_start)
+			
+	section_data.pattern = pieces_placement_layer.get_pattern(used_cells)
+	section_data.pattern_offset = offset
+	section_data.groups = pieces_placement_layer.groups_result
+	section_data.finished = true
+	saved_section.emit(section_data)

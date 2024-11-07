@@ -29,7 +29,7 @@ func load_sections():
 	for section_file in DirAccess.get_files_at(SECTIONS_PATH):
 		var section_data: SectionData = load(SECTIONS_PATH + section_file)
 		sections.push_back(section_data)
-		var start = section_data.cell_start
+		var start = section_data.world_head_cell
 		var end = start + Vector2i(section_data.width, section_data.height)
 		if min_x > start.x:
 			min_x = start.x
@@ -45,7 +45,7 @@ func load_sections():
 			pass
 	
 	for section in sections:
-		var cell_start = section.cell_start
+		var cell_start = section.world_head_cell
 		for pos_x in range(section.width):
 			for pos_y in range(section.height):
 				var cell = cell_start + Vector2i(pos_x, pos_y)
@@ -99,8 +99,11 @@ func open_section(section_data: SectionData) -> void:
 	section_panel.visible = true
 	panel.visible = true
 	
-func save_section(section_pattern: TileMapPattern, section_start: Vector2i):
-	drawn_squares_layer.set_pattern(2*opened_section_data.cell_start + section_start, section_pattern)
+func save_section(section_data: SectionData):
+	var pattern: TileMapPattern = section_data.pattern
+	var pattern_offset: Vector2i = section_data.pattern_offset
+	var section_start: Vector2i = section_data.world_head_cell
+	drawn_squares_layer.set_pattern(2*section_start + pattern_offset, pattern)
 
 func close_section():
 	if is_instance_valid(opened_section):

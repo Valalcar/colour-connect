@@ -18,6 +18,9 @@ var color_groups = {}
 # value: Vector2i - group identifier
 var cells_group = {}
 
+## Save result of groups calculation
+var groups_result : Array[SectionColorGroup] = []
+
 func remap_groups(new_cells: Array[Vector2i]) -> void:
 	var unmaped_cells = new_cells.duplicate()
 	for cell in new_cells:
@@ -60,7 +63,7 @@ func build_groups_list() -> void:
 		Vector2i(1, 0): "Blue",
 		Vector2i(0, 1): "Yellow"
 	}
-	var groups_results : Array[SectionColorGroup] = []
+	var new_results : Array[SectionColorGroup] = []
 	for group_head_cell in color_groups:
 		var atlas = get_cell_atlas_coords(group_head_cell)
 		var color = CELL_COLOUR_MAP[atlas]
@@ -69,8 +72,9 @@ func build_groups_list() -> void:
 		group_result.head_cell = group_head_cell
 		group_result.color = color
 		group_result.cells_count = group_size
-		groups_results.push_back(group_result)
-	grouping_recalculated.emit(groups_results)
+		new_results.push_back(group_result)
+	groups_result = new_results
+	grouping_recalculated.emit(groups_result)
 
 func join_groups(cells_from_groups: Array[Vector2i]):
 	var groups = cells_from_groups.map(func (c): return cells_group[c])

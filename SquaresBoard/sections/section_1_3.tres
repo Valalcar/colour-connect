@@ -1,9 +1,12 @@
-[gd_resource type="Resource" script_class="SectionData" load_steps=2 format=3 uid="uid://cwbny2kkxvqqh"]
+[gd_resource type="Resource" script_class="SectionData" load_steps=3 format=3 uid="uid://cwbny2kkxvqqh"]
 
-[ext_resource type="Script" path="res://SquaresBoard/SectionBoard/section_data.gd" id="1_qlc73"]
+[ext_resource type="Script" path="res://SquaresBoard/Data/section-color-group.gd" id="1_7lwfh"]
+[ext_resource type="Script" path="res://SquaresBoard/Data/section_data.gd" id="1_qlc73"]
 
 [resource]
 script = ExtResource("1_qlc73")
-cell_start = Vector2i(1, 3)
+world_head_cell = Vector2i(1, 3)
 width = 5
 height = 2
+finished = false
+groups = Array[ExtResource("1_7lwfh")]([])
