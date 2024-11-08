@@ -17,6 +17,9 @@ var opened_section_data: SectionData
 
 var sections_dictionary = {}
 
+var drag_start: Vector2i
+var is_dragging_mouse: bool = false
+
 func _ready() -> void:
 	load_sections()
 
@@ -73,10 +76,14 @@ func load_game(saved_game: SavedGame):
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("esc"):
 		close_section()
+		return
 	
 	if opened_section != null:
 		return
-	
+
+	if event.is_action_pressed("lmb"):
+		drag_start = background_layer.local_to_map(get_global_mouse_position())
+		
 	if event.is_action_released("lmb"):
 		var mouse_cell = background_layer.local_to_map(get_global_mouse_position())
 		handle_click(mouse_cell)
@@ -84,7 +91,50 @@ func _input(event: InputEvent) -> void:
 func handle_click(cell: Vector2i):
 	if sections_dictionary.has(cell):
 		open_section(sections_dictionary[cell])
+	else:
+		handle_hold_and_drag(cell)
+		
+func handle_hold_and_drag(drag_stop: Vector2i):
+	var selected_cells: Array[Vector2i] = get_selected_cells(drag_stop)
+	if selected_cells.size() < 2:
+		return
+	for cell in selected_cells:
+		if sections_dictionary.has(cell):
+			return;
+	create_new_section(selected_cells)
+
+func get_selected_cells(drag_stop: Vector2i) -> Array[Vector2i]:
+	var cells : Array[Vector2i] = []
+	var min_x = mini(drag_start.x, drag_stop.x)
+	var max_x = maxi(drag_start.x, drag_stop.x) + 1
+	var min_y = mini(drag_start.y, drag_stop.y)
+	var max_y = maxi(drag_start.y, drag_stop.y) + 1
+	for cell_x in range(min_x, max_x):
+		for cell_y in range(min_y, max_y):
+			cells.push_back(Vector2i(cell_x, cell_y))
+	return cells
+
+func create_new_section(cells: Array[Vector2i]) -> void:
+	var cell_start = cells.front()
+	var cell_end = cells.front()
+	for cell in cells:
+		if cell.x < cell_start.x:
+			cell_start.x = cell.x
+		if cell.y < cell_start.y:
+			cell_start.y = cell.y
+		if cell.x > cell_end.x:
+			cell_end.x = cell.x
+		if cell.y > cell_end.y:
+			cell_end.y = cell.y
 	
+	var section_data = SectionData.new()
+	section_data.world_head_cell = cell_start
+	section_data.width = (cell_end.x - cell_start.x + 1)
+	section_data.height = (cell_end.y - cell_start.y + 1)
+	sections.push_back(section_data)
+	sections_dictionary[cell_start] = section_data
+	open_section(section_data)
+
 func open_section(section_data: SectionData) -> void:
 	opened_section_data = section_data
 	var section = SECTION_BOARD.instantiate()
