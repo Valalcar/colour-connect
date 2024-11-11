@@ -1,17 +1,24 @@
-extends CanvasLayer
+class_name SectionHUD
+extends Control
 
 @onready var stats_container: VBoxContainer = $PanelContainer/MarginContainer/StatsVBoxContainer
-@onready var pieces_placement_layer: PiecesPlacementLayer = $"../PiecesPlacementLayer"
 
 func _ready() -> void:
-	if !pieces_placement_layer.ready:
-		await pieces_placement_layer.read
-	pieces_placement_layer.grouping_recalculated.connect(show_stats)
+	SignalHub.section_stats_recalculated.connect(_show_section_stats)
 
-func show_stats(stats: Array[SectionColorGroup]) -> void:
+func reset() -> void:
+	_clear_stats()
+	var empty_label = Label.new()
+	empty_label.text = "- EMPTY -"
+	stats_container.add_child(empty_label)
+
+func _clear_stats() -> void:
 	for stat in stats_container.get_children():
 		stats_container.remove_child(stat)
-		
+
+func _show_section_stats(stats: Array[SectionColorGroup]) -> void:
+	_clear_stats()
+
 	var labels: Array[Label] = []
 	for group in stats:
 		var stat_label = Label.new()

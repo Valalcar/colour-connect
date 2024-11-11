@@ -74,7 +74,7 @@ func build_groups_list() -> void:
 		group_result.cells_count = group_size
 		new_results.push_back(group_result)
 	groups_result = new_results
-	grouping_recalculated.emit(groups_result)
+	SignalHub.section_stats_recalculated.emit(groups_result)
 
 func join_groups(cells_from_groups: Array[Vector2i]):
 	var groups = cells_from_groups.map(func (c): return cells_group[c])

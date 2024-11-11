@@ -1,0 +1,79 @@
+[gd_scene load_steps=4 format=3 uid="uid://cmyg7sc7ody4v"]
+
+[ext_resource type="Script" path="res://HUD/game_hud.gd" id="1_mt63d"]
+[ext_resource type="Script" path="res://HUD/section_hud.gd" id="2_vfytp"]
+[ext_resource type="Script" path="res://HUD/board_hud.gd" id="3_o0ao6"]
+
+[node name="GameHUD" type="CanvasLayer"]
+script = ExtResource("1_mt63d")
+
+[node name="SectionHUD" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_vfytp")
+
+[node name="PanelContainer" type="PanelContainer" parent="SectionHUD"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -71.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="SectionHUD/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="StatsVBoxContainer" type="VBoxContainer" parent="SectionHUD/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SectionHUD/PanelContainer/MarginContainer/StatsVBoxContainer"]
+layout_mode = 2
+text = "- EMPTY -"
+
+[node name="BoardHUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("3_o0ao6")
+
+[node name="PanelContainer" type="PanelContainer" parent="BoardHUD"]
+layout_mode = 1
+offset_right = 90.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="BoardHUD/PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="BoardHUD/PanelContainer/Button"]
+layout_mode = 2
+offset_right = 91.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BoardHUD/PanelContainer/Button/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BoardHUD/PanelContainer/Button/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Turn: "
+
+[node name="TurnNumberLabel" type="Label" parent="BoardHUD/PanelContainer/Button/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "0"
+
+[connection signal="button_down" from="BoardHUD/PanelContainer/Button" to="BoardHUD" method="_on_button_button_down"]
