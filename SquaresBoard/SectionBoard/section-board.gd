@@ -35,6 +35,7 @@ func _ready() -> void:
 	width = section_data.width
 	height = section_data.height
 	background_layer.draw_background(width, height)
+	SignalHub.section_opened.emit()
 
 func _input(event: InputEvent) -> void:
 	if is_finished:

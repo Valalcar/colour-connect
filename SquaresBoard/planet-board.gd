@@ -115,9 +115,12 @@ func get_selected_cells(drag_stop: Vector2i) -> Array[Vector2i]:
 	return cells
 
 func create_new_section(cells: Array[Vector2i]) -> void:
+	var section_data = SectionData.new()
+	
 	var cell_start = cells.front()
 	var cell_end = cells.front()
 	for cell in cells:
+		sections_dictionary[cell] = section_data
 		if cell.x < cell_start.x:
 			cell_start.x = cell.x
 		if cell.y < cell_start.y:
@@ -127,7 +130,6 @@ func create_new_section(cells: Array[Vector2i]) -> void:
 		if cell.y > cell_end.y:
 			cell_end.y = cell.y
 	
-	var section_data = SectionData.new()
 	section_data.world_head_cell = cell_start
 	section_data.width = (cell_end.x - cell_start.x + 1)
 	section_data.height = (cell_end.y - cell_start.y + 1)
