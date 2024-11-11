@@ -47,3 +47,33 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("3_o0ao6")
+
+[node name="PanelContainer" type="PanelContainer" parent="BoardHUD"]
+layout_mode = 1
+offset_right = 90.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="BoardHUD/PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="BoardHUD/PanelContainer/Button"]
+layout_mode = 2
+offset_right = 91.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BoardHUD/PanelContainer/Button/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BoardHUD/PanelContainer/Button/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Turn: "
+
+[node name="TurnNumberLabel" type="Label" parent="BoardHUD/PanelContainer/Button/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "0"
+
+[connection signal="button_down" from="BoardHUD/PanelContainer/Button" to="BoardHUD" method="_on_button_button_down"]

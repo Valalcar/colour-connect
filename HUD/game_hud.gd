@@ -1,7 +1,8 @@
 extends CanvasLayer
 
 @onready var section_hud: SectionHUD = $SectionHUD
-@onready var board_hud: Control = $BoardHUD
+@onready var board_hud: BoardHUD = $BoardHUD
+
 
 func _ready() -> void:
 	SignalHub.section_opened.connect(show_section_hud)

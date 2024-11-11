@@ -7,4 +7,4 @@ func _ready() -> void:
 	
 func next_turn() -> void:
 	current_turn += 1
-	print("On Turn " + str(current_turn))
+	SignalHub.turn_changed.emit(current_turn)
