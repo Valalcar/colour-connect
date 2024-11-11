@@ -137,6 +137,7 @@ func create_new_section(cells: Array[Vector2i]) -> void:
 
 func open_section(section_data: SectionData) -> void:
 	opened_section_data = section_data
+	SignalHub.section_opened.emit()
 	var section = SECTION_BOARD.instantiate()
 	section.section_data = section_data
 	section.saved_section.connect(save_section)
@@ -157,6 +158,7 @@ func save_section(section_data: SectionData):
 
 func close_section():
 	if is_instance_valid(opened_section):
+		SignalHub.section_closed.emit()
 		opened_section.queue_free()
 		section_panel.visible = false
 		panel.visible = false

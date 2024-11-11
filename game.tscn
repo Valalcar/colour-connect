@@ -1,12 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://cses16wteb3d3"]
+[gd_scene load_steps=5 format=3 uid="uid://cses16wteb3d3"]
 
+[ext_resource type="PackedScene" uid="uid://cmyg7sc7ody4v" path="res://HUD/game_hud.tscn" id="1_8jy0r"]
 [ext_resource type="PackedScene" uid="uid://dvldfbmhqssri" path="res://SquaresBoard/planet_board.tscn" id="1_hmc6b"]
 [ext_resource type="Script" path="res://SaveGame/saver-loader.gd" id="2_onkh2"]
+[ext_resource type="Script" path="res://turn_handler.gd" id="3_0c3iu"]
 
 [node name="Game" type="Node2D"]
+
+[node name="GameHUD" parent="." instance=ExtResource("1_8jy0r")]
 
 [node name="PlanetBoard" parent="." instance=ExtResource("1_hmc6b")]
 unique_name_in_owner = true
 
 [node name="SaverLoader" type="Node" parent="."]
 script = ExtResource("2_onkh2")
+
+[node name="TurnHandler" type="Node" parent="."]
+script = ExtResource("3_0c3iu")

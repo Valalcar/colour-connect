@@ -35,7 +35,6 @@ func _ready() -> void:
 	width = section_data.width
 	height = section_data.height
 	background_layer.draw_background(width, height)
-	print("Width: " + str(width) + " | Height" + str(height))
 
 func _input(event: InputEvent) -> void:
 	if is_finished:
@@ -61,6 +60,7 @@ func handle_mouse_hover() -> void:
 func piece_is_inside_area(reference_cell: Vector2i) -> bool:
 	for line_n in current_piece.size():
 		for col_n in current_piece[line_n].size():
+			@warning_ignore("integer_division")
 			var cell = Vector2(reference_cell.x + (col_n/2), reference_cell.y + (line_n/2))
 			if cell.x < 0 || cell.x >= width || cell.y < 0 || cell.y >= height:
 				return false
